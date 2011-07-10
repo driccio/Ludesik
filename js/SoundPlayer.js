@@ -1,4 +1,4 @@
-function MobileAgent() {
+function SoundPlayer() {
 	this.playAll = function(soundIds){};
 	
 	(function() {
