@@ -1,5 +1,5 @@
 function MobileAgent() {
-	this.playAll = function(wallIds){};
+	this.playAll = function(soundIds){};
 	
 	(function() {
 		 //Constructeur     
