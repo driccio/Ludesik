@@ -1,10 +1,14 @@
-var map = Map();
-var soundPlayer = SoundPlayer();
+function Ludesik(){
+
+    var map = Map();
+    var soundPlayer = SoundPlayer();
 
 
-function tick() {
+    function tick() {
 	
+    }
+
+
+    setTimeout(tick, 1000);
+
 }
-
-
-setTimeout(tick, 1000);

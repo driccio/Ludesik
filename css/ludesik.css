@@ -1,0 +1,17 @@
+.map-container{
+    display: table;
+    border-collapse: collapse;
+    margin:auto;
+}
+
+.map-row{
+    display:table-row;
+}
+
+.map-cell{
+    display:table-cell;
+    width: 60px;
+    height:60px;
+    background-color: #FCDB8C;
+    border: 1px solid #777;
+}
