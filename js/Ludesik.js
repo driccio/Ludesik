@@ -1,14 +1,15 @@
-function Ludesik(){
-
+function Ludesik(soundPlayer, renderer){
     var map = Map();
 	var soundPlayer = SoundPlayer();
-	var renderer = Renderer();
+	var renderer = renderer;
+    renderer.setOnSquareInteraction(addMobileAgent);
+    var counter = 0;
 
-	function addMobileAgent() {
-		//TODO : manage position and id generation. Direction is set with a default value.
-		
-		map.addMobileAgent(id, direction, x, y);
-		renderer.addMobileAgent(id);
+	function addMobileAgent(position) {
+		map.addMobileAgent(counter, 0, position);
+		renderer.addMobileAgent(counter, position);
+
+        counter++;
 	}
 
 	function onMobileAgentInteraction(id) {
@@ -18,9 +19,9 @@ function Ludesik(){
 	function tick() {
 		var result = map.nextStep();
 		
-		soundPlayer.playAll(results.wallIds);
+		soundPlayer.playAll(result.wallsInCollision);
 		
-		renderer.render(results);
+		renderer.refresh(result);
 	}
 
     setTimeout(tick, 1000);

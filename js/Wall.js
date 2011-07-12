@@ -1,9 +1,5 @@
-function MobileAgent() {
-	var id;
-	
+function MobileAgent(id) {
+    this.id = id;
+
 	this.onCollision = function(number){};
-	
-	(function() {
-		 //Constructeur     
-	}).call(this);
 }

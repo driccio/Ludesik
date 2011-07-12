@@ -5,7 +5,7 @@
     function init(){
         var container = document.querySelector('.map-container'); // only the first one
         
-        ludesik = new Ludesik(new SoundPlayer(), new Renderer(container)); 
+        ludesik = new Ludesik(new SoundPlayer(), new Renderer(container));
     }
     
     document.addEventListener('DOMContentLoaded', init, false);
