@@ -2,19 +2,19 @@ function Map() {
 	var walls;
 	var mobileAgents = [];
 	var mobileAgentsPositions = [];
-	var mobileAgentPerSquare;
+	var mobileAgentPerSquare = [];
 	
 	function getMobileAgentPerSquareIndex(id) {
 		return (mobileAgentsPositions[id].y * 9) + mobileAgentsPositions[id].x;
 	}
 	
-	this.addMobileAgentPosition = function (id, direction, position) {
+	this.addMobileAgent = function (id, direction, position) {
 		mobileAgents[id] = new MobileAgent(id);
 		mobileAgentsPositions[id] = position;
 	};
 		     
 	this.onMobileAgentInteraction = function(id){
-		mobileAgents[id].onIteraction();
+		mobileAgents[id].onInteraction();
 	};
 	
 	this.nextStep = function () {
@@ -31,10 +31,11 @@ function Map() {
 				
 				var mobileAgentsInSquare = mobileAgentPerSquare[getMobileAgentPerSquareIndex(e.id)];
 				mobileAgentsInSquare.splice(mobileAgentsInSquare.indexOf(e) - 1,1);
-				
 				var x = mobileAgentsPositions[e.id].x + (e.direction.deltaX * e.increment);
 				var y = mobileAgentsPositions[e.id].y + (e.direction.deltaY * e.increment);
-				
+				mobileAgentsPositions[e.id].x = x;
+				mobileAgentsPositions[e.id].y = y;
+
 				if (x < 0) {
 					westSiteCollision = true;
 					mobileAgentsPositions[e.id].x = 0;
@@ -109,18 +110,16 @@ function Map() {
 	};
 	
 	(function() {
-		 mobileAgentPerSquare = new Array(9*9);
+		 var i;
 		 
-		 mobileAgentPerSquare.foreach(
-			 function (e, i, a) {
-				 mobileAgentPerSquare[i] = [];
-			 }
-		 );
+		 for(i = 0; i<9*9 ; i++){
+		    mobileAgentPerSquare[i] = [];
+		 }
 		 
 		 walls = new Object();
 		 
 		 for (var i = 0 ; i < 9 ; i++) {
-			walls["w" + i] = new Wall(i);
+			walls["W" + i] = new Wall(i);
 			walls["N" + i] = new Wall(i + 9);
 			walls["E" + i] = new Wall(i + 18);
 			walls["S" + i] = new Wall(i + 27);
