@@ -2,6 +2,7 @@
     display: table;
     border-collapse: collapse;
     margin:auto;
+    position: relative;
 }
 
 .map-row{
@@ -11,7 +12,15 @@
 .map-cell{
     display:table-cell;
     width: 60px;
-    height:60px;
+    height: 60px;
     background-color: #FCDB8C;
     border: 1px solid #777;
+}
+
+
+.mobile-agent{
+    width: 60px; /* Smaller than .map-cell width to fit */
+    height: 60px;/* Smaller than .map-cell height to fit */
+    background: #999;
+    position: absolute;
 }

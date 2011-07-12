@@ -1,8 +1,5 @@
 function Ludesik(soundPlayer, renderer){
-    var map = Map();
-	var soundPlayer = SoundPlayer();
-	var renderer = renderer;
-    renderer.setOnSquareInteraction(addMobileAgent);
+    var map = new Map();
     var counter = 0;
 
 	function addMobileAgent(position) {
@@ -16,6 +13,10 @@ function Ludesik(soundPlayer, renderer){
 		map.onMobileAgentInteraction(id);
 	}
 
+    renderer.setOnSquareInteraction(addMobileAgent);
+    renderer.setOnMobileAgentInteraction(onMobileAgentInteraction);
+
+
 	function tick() {
 		var result = map.nextStep();
 		
@@ -24,6 +25,6 @@ function Ludesik(soundPlayer, renderer){
 		renderer.refresh(result);
 	}
 
-    setTimeout(tick, 1000);
+    setInterval(tick, 1000);
 
 }

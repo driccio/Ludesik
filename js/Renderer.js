@@ -1,21 +1,63 @@
-function Renderer(container, onSquareInteraction){
+function Renderer(container){
     var MAX_X = 9, MAX_Y = 9;
     var squares = []; // A weakmap would be prefered to have O(1)-ish look-up
+    var document = container.ownerDocument;
+    var onSquareInteraction, onMobileAgentInteraction;
+    var mobileAgents = [];
  
-    this.addMobileAgent = function(ma, pos){
-                              var index = pos.x*MAX_Y + pos.x;
+    this.addMobileAgent = function(maId, pos){
+                              var index = pos.y*MAX_X + pos.x;
                               var square = squares[index];
+                              var maElement = document.createElement('div');
+                              maElement.className = "mobile-agent";
 
-                              // create a graphical mobile agent
-                              // compute pixel-based coordinates based on square.{top|left}
+                              /* To keep in sync with .mobile-agent & .map-cell css rules */
+                              maElement.style.top = (pos.y*61) + 1 + 'px'; 
+                              maElement.style.left = (pos.x*61) + 1 + 'px'; 
                               
+                              maElement.addEventListener('click', function(){
+                                                                      var newStyle = onMobileAgentInteraction(maId);
+                                                                      for(style in newStyle){
+                                                                          if(["top", "left", "bottom", "right"].indexOf(style) !== -1) 
+                                                                              continue;
+                                                                          // Beware handling for: margin, border, width, height, display, visibility, float?
+                                                                          // position
+                                                                          
+                                                                          if(style === "className"){
+                                                                              maElement.className = style;
+                                                                              continue;
+                                                                          }
+                                                                          
+                                                                          maElement.style[style] = newStyle[style];
+                                                                      }
+                                                                  }, false);
                               
+                              container.appendChild(maElement);
+
+                              mobileAgents[maId] = maElement;
                           };
 
 
-    this.refresh = function(){
-    
+    this.refresh = function(state){
+                       state.positions.forEach(
+                        function (e, i, a) {
+                             var maElement = mobileAgents[e.id];
+                             var pos = e.position;
+                             maElement.style.top = (pos.y*61) + 1 + 'px'; 
+                             maElement.style.left = (pos.x*61) + 1 + 'px';
+                        }
+                       );
                    };
+
+    this.setOnSquareInteraction = function(f){
+                                      onSquareInteraction = f;
+                                      delete this.setOnSquareInteraction;
+                                  };
+
+    this.setOnMobileAgentInteraction = function(f){
+                                           onMobileAgentInteraction = f;
+                                           delete this.setOnMobileAgentInteraction;
+                                       };
 
     (function(){
         var i,j;
