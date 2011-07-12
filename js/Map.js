@@ -31,27 +31,31 @@ function Map() {
 				
 				var mobileAgentsInSquare = mobileAgentPerSquare[getMobileAgentPerSquareIndex(e.id)];
 				mobileAgentsInSquare.splice(mobileAgentsInSquare.indexOf(e) - 1,1);
+
 				var x = mobileAgentsPositions[e.id].x + (e.direction.deltaX * e.increment);
 				var y = mobileAgentsPositions[e.id].y + (e.direction.deltaY * e.increment);
-				mobileAgentsPositions[e.id].x = x;
+
+                mobileAgentsPositions[e.id].x = x;
 				mobileAgentsPositions[e.id].y = y;
 
-				if (x < 0) {
+                console.log(x, y);
+
+				if (x < 1) {
 					westSiteCollision = true;
 					mobileAgentsPositions[e.id].x = 0;
 				}
 				
-				if (y < 0) {
+				if (y < 1) {
 					northSiteCollision = true;
 					mobileAgentsPositions[e.id].y = 0;
 				}
 				
-				if (x >= 9) {
+				if (x >= 8) {
 					eastSiteCollision = true;
 					mobileAgentsPositions[e.id].x = 8;
 				}
 				
-				if (y >= 9) {
+				if (y >= 8) {
 					southSiteCollision = true;
 					mobileAgentsPositions[e.id].y = 8;
 				}
