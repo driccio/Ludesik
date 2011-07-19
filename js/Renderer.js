@@ -12,7 +12,8 @@ function Renderer(container){
                               maElement.className = "mobile-agent";
 
                               /* To keep in sync with .mobile-agent & .map-cell css rules */
-                              maElement.style.top = (pos.y*61) + 1 + 'px'; 
+                              // Play around with 60/61 to get nice rendering depending on browser
+                              maElement.style.top = (pos.y*60) + 1 + 'px'; 
                               maElement.style.left = (pos.x*61) + 1 + 'px'; 
                               
                               maElement.addEventListener('click', function(){
@@ -31,7 +32,10 @@ function Renderer(container){
                                                                           maElement.style[style] = newStyle[style];
                                                                       }
                                                                   }, false);
-                              
+                                                                  
+                              // Rendering incompatbilities on FF4, Chrome 12 and Opera 11.50
+                              // led us to create a compatibility-container to append mobile agents to.
+                              container = document.getElementById('compat-container2');
                               container.appendChild(maElement);
 
                               mobileAgents[maId] = maElement;
@@ -40,12 +44,13 @@ function Renderer(container){
 
     this.refresh = function(state){
                        state.positions.forEach(
-                        function (e, i, a) {
+                         function (e, i, a) {
                              var maElement = mobileAgents[e.id];
                              var pos = e.position;
-                             maElement.style.top = (pos.y*61) + 1 + 'px'; 
+                             // Play around with 60/61 to get nice rendering depending on browser
+                             maElement.style.top = (pos.y*60) + 1 + 'px'; 
                              maElement.style.left = (pos.x*61) + 1 + 'px';
-                        }
+                         }
                        );
                    };
 
