@@ -7,20 +7,37 @@ function Map() {
 	function getMobileAgentPerSquareIndex(id) {
 		return (mobileAgentsPositions[id].y * 9) + mobileAgentsPositions[id].x;
 	}
-	
+
+    this.getWallIds = function () {
+        return walls.keys();
+    }
+
+    /**
+     * Add a mobile agent knowing its id, direction and position.
+     * @param id the mobileAgent id
+     * @param direction the direction (object with the properties deltaX and deltaY)
+     * @param position the position (object with the properties x and y)
+     */
 	this.addMobileAgent = function (id, direction, position) {
 		mobileAgents[id] = new MobileAgent(id);
 		mobileAgentsPositions[id] = position;
 	};
-		     
+
+    /**
+     * Method call when on interaction with mobileAgent (click for instance).
+     * @param id the mobileAgentId
+     */
 	this.onMobileAgentInteraction = function(id){
 		mobileAgents[id].onInteraction();
 	};
-	
+
+    /**
+     * The nextStep function compute all the new positions of mobileAgents, and detect the collisions with walls and mobileAgents.
+     */
 	this.nextStep = function () {
 		var state = new State();
-		
-		mobileAgents.forEach(
+
+        mobileAgents.forEach(
 			function (e, i, a) {
 				var wallsInCollisionWith = [];
 				
@@ -37,8 +54,6 @@ function Map() {
 
                 mobileAgentsPositions[e.id].x = x;
 				mobileAgentsPositions[e.id].y = y;
-
-                console.log(x, y);
 
 				if (x < 1) {
 					westSiteCollision = true;
@@ -85,14 +100,14 @@ function Map() {
 					e.onWallsCollision(wallsInCollisionWith);
 				}
 				
-				mobileAgentPerSquare[getMobileAgentPerSquareIndex(e.id)].push[e];
+				mobileAgentPerSquare[getMobileAgentPerSquareIndex(e.id)].push(e);
 			}
 		);
-		
+
 		mobileAgentPerSquare.forEach(
 			function (e, i, a) {
 				if (mobileAgentPerSquare[i].length > 1) {
-					mobileAgentPerSquare[i].foreach(
+					mobileAgentPerSquare[i].forEach(
 						function (e, j, a) {
 							mobileAgentPerSquare[i][j].onMobileAgentsCollision(
 								mobileAgentPerSquare[i].slice(mobileAgentPerSquare[i].indexOf(e) - 1, 1));
@@ -123,10 +138,10 @@ function Map() {
 		 walls = new Object();
 		 
 		 for (var i = 0 ; i < 9 ; i++) {
-			walls["W" + i] = new Wall(i);
-			walls["N" + i] = new Wall(i + 9);
-			walls["E" + i] = new Wall(i + 18);
-			walls["S" + i] = new Wall(i + 27);
+			walls["W" + i] = new Wall(i, 'W');
+			walls["N" + i] = new Wall(i + 9, 'N');
+			walls["E" + i] = new Wall(i + 18, 'E');
+			walls["S" + i] = new Wall(i + 27, 'S');
 		 }
 		 		    
 	}).call(this);

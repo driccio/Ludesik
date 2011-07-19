@@ -4,7 +4,17 @@ function Renderer(container){
     var document = container.ownerDocument;
     var onSquareInteraction, onMobileAgentInteraction;
     var mobileAgents = [];
- 
+
+    function randomColorString(){
+        var r, g, b;
+
+        r = Math.floor(256*Math.random()).toString(10);
+        g = Math.floor(256*Math.random()).toString(10);
+        b = Math.floor(256*Math.random()).toString(10);
+
+        return ('rgb('+ r +','+ g +','+ b +')');
+    }
+
     this.addMobileAgent = function(maId, pos){
                               var index = pos.y*MAX_X + pos.x;
                               var square = squares[index];
@@ -14,8 +24,11 @@ function Renderer(container){
                               /* To keep in sync with .mobile-agent & .map-cell css rules */
                               maElement.style.top = (pos.y*61) + 1 + 'px'; 
                               maElement.style.left = (pos.x*61) + 1 + 'px'; 
-                              
+
+                              maElement.style.backgroundColor = randomColorString();
+
                               maElement.addEventListener('click', function(){
+                                  console.log('test');
                                                                       var newStyle = onMobileAgentInteraction(maId);
                                                                       for(style in newStyle){
                                                                           if(["top", "left", "bottom", "right"].indexOf(style) !== -1) 
@@ -43,7 +56,7 @@ function Renderer(container){
                         function (e, i, a) {
                              var maElement = mobileAgents[e.id];
                              var pos = e.position;
-                             maElement.style.top = (pos.y*61) + 1 + 'px'; 
+                             maElement.style.top = (pos.y*61) + 1 + 'px';
                              maElement.style.left = (pos.x*61) + 1 + 'px';
                         }
                        );
@@ -77,7 +90,7 @@ function Renderer(container){
             for(j=0 ; j<MAX_X ; j++){
                 cell = document.createElement('div');
                 cell.className = "map-cell";
-                
+
                 squares.push(cell);
                 
                 row.appendChild(cell);
@@ -87,7 +100,7 @@ function Renderer(container){
         }
         
         container.appendChild(table);
-        
+
         container.addEventListener('click', function(e){
                                                 var i = squares.indexOf(e.target);
                                                 var x;

@@ -1,7 +1,7 @@
 .map-container{
     display: table;
     border-collapse: collapse;
-    margin:auto;
+    /*margin:auto;*/
     position: relative;
 }
 
