@@ -1,6 +1,7 @@
-function Ludesik(soundPlayer, renderer){
+function Ludesik(renderer){
     var map = new Map();
     var counter = 0;
+    var soundPlayer;
 
 	function addMobileAgent(position) {
 		map.addMobileAgent(counter, 0, position);
@@ -16,6 +17,17 @@ function Ludesik(soundPlayer, renderer){
     renderer.setOnSquareInteraction(addMobileAgent);
     renderer.setOnMobileAgentInteraction(onMobileAgentInteraction);
 
+    (function(){
+        var ids = map.getWallIds();
+        var soundsInit = {};
+        
+        ids.forEach(function(id, i){
+                        // not our files. Begging for people to create us awesome tones
+                        soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + i%9 + ".ogg";
+                    });
+        
+        soundPlayer = new SoundPlayer(document.getElementById('audios'), soundsInit);
+    })();
 
 	function tick() {
 		var result = map.nextStep();

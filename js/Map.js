@@ -9,7 +9,7 @@ function Map() {
 	}
 
     this.getWallIds = function () {
-        return walls.keys();
+        return Object.keys(walls);
     }
 
     /**

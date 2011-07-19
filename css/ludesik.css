@@ -1,7 +1,26 @@
+head, body{
+   margin:0;
+   padding:0;
+}
+
+#compat-container1{
+    margin:auto;
+    display:block;
+    position:relative;
+}
+
+
+#compat-container2{
+    padding: 0;
+    border: 0;
+    display:inline-block;
+    position:relative;
+}
+
 .map-container{
     display: table;
     border-collapse: collapse;
-    /*margin:auto;*/
+    margin: auto;
     position: relative;
 }
 
