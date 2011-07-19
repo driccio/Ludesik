@@ -37,6 +37,6 @@ function Ludesik(renderer){
 		renderer.refresh(result);
 	}
 
-    setInterval(tick, 1000);
+    setInterval(tick, 500);
 
 }
