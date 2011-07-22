@@ -55,22 +55,22 @@ function Map() {
                 mobileAgentsPositions[e.id].x = x;
 				mobileAgentsPositions[e.id].y = y;
 
-				if (x < 1) {
+				if (x < 1 && e.direction.deltaX < 0) {
 					westSiteCollision = true;
 					mobileAgentsPositions[e.id].x = 0;
 				}
 				
-				if (y < 1) {
+				if (y < 1 && e.direction.deltaY < 0) {
 					northSiteCollision = true;
 					mobileAgentsPositions[e.id].y = 0;
 				}
 				
-				if (x >= 8) {
+				if (x >= 8 && e.direction.deltaX > 0) {
 					eastSiteCollision = true;
 					mobileAgentsPositions[e.id].x = 8;
 				}
 				
-				if (y >= 8) {
+				if (y >= 8 && e.direction.deltaY > 0) {
 					southSiteCollision = true;
 					mobileAgentsPositions[e.id].y = 8;
 				}
