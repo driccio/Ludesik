@@ -15,11 +15,12 @@ function Renderer(container){
         return ('rgb('+ r +','+ g +','+ b +')');
     }
 
-    this.addMobileAgent = function(maId, pos){
+    this.addMobileAgent = function(maId, pos, direction){
         var index = pos.y*MAX_X + pos.x;
         var square = squares[index];
         var maElement = document.createElement('div');
         maElement.className = "mobile-agent";
+        refreshArrow(maElement, direction);
 
         /* To keep in sync with .mobile-agent & .map-cell css rules */
         // Play around with 60/61 to get nice rendering depending on browser
@@ -29,20 +30,25 @@ function Renderer(container){
         maElement.style.backgroundColor = randomColorString();
 
         maElement.addEventListener('click', function(){
-            var newStyle = onMobileAgentInteraction(maId);
-            for(style in newStyle){
-                if(["top", "left", "bottom", "right"].indexOf(style) !== -1)
-                    continue;
-                // Beware handling for: margin, border, width, height, display, visibility, float?
-                // position
+            var newInformations = onMobileAgentInteraction(maId);
 
-                if(style === "className"){
-                    maElement.className = style;
-                    continue;
-                }
+            maElement.className = "mobile-agent";
+            refreshArrow(maElement, newInformations.direction);
 
-                maElement.style[style] = newStyle[style];
-            }
+            // I didn't like what we done here so I removed it. :-)
+//            for(style in newStyle){
+//                if(["top", "left", "bottom", "right"].indexOf(style) !== -1)
+//                    continue;
+//                // Beware handling for: margin, border, width, height, display, visibility, float?
+//                // position
+//
+//                if(style === "className"){
+//                    maElement.className = maElement.className + " " + newStyle[style];
+//                    continue;
+//                }
+//
+//                maElement.style[style] = newStyle[style];
+//            }
         }, false);
 
         // Rendering incompatbilities on FF4, Chrome 12 and Opera 11.50
@@ -53,6 +59,21 @@ function Renderer(container){
         mobileAgents[maId] = maElement;
     };
 
+    function refreshArrow(maElement, direction) {
+        if (direction.deltaY >= 0 && direction.deltaX > 0){
+            maElement.className += ' right-arrow';
+        } else {
+            if (direction.deltaY <= 0 && direction.deltaX < 0) {
+                maElement.className += ' left-arrow';
+            } else {
+                if (direction.deltaY < 0 && direction.deltaX >= 0) {
+                    maElement.className += ' top-arrow';
+                } else {
+                    maElement.className += ' bottom-arrow';
+                }
+            }
+        }
+    }
 
     this.refresh = function(state){
         state.positions.forEach(
@@ -63,6 +84,10 @@ function Renderer(container){
                 // Play around with 60/61 to get nice rendering depending on browser
                 maElement.style.top = (pos.y*60) + 1 + 'px';
                 maElement.style.left = (pos.x*61) + 1 + 'px';
+
+                var direction = e.direction;
+                maElement.className = "mobile-agent";
+                refreshArrow(maElement, direction);
             }
         );
     };

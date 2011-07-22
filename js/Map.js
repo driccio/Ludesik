@@ -15,20 +15,20 @@ function Map() {
     /**
      * Add a mobile agent knowing its id, direction and position.
      * @param id the mobileAgent id
-     * @param direction the direction (object with the properties deltaX and deltaY)
      * @param position the position (object with the properties x and y)
+     * @param direction the direction (object with the properties deltaX and deltaY)
      */
-	this.addMobileAgent = function (id, direction, position) {
-		mobileAgents[id] = new MobileAgent(id);
-		mobileAgentsPositions[id] = position;
-	};
+    this.addMobileAgent = function (id, position, direction) {
+        mobileAgents[id] = new MobileAgent(id, direction);
+        mobileAgentsPositions[id] = position;
+    };
 
     /**
      * Method call when on interaction with mobileAgent (click for instance).
      * @param id the mobileAgentId
      */
 	this.onMobileAgentInteraction = function(id){
-		mobileAgents[id].onInteraction();
+		return mobileAgents[id].onInteraction();
 	};
 
     /**
@@ -121,7 +121,7 @@ function Map() {
 
         mobileAgents.forEach(
 			function (e, i, a) {
-                state.positions.push({id:e.id, position:mobileAgentsPositions[e.id]});
+                state.positions.push({id:e.id, position:mobileAgentsPositions[e.id], direction:e.direction});
             }
         );
 

@@ -1,12 +1,12 @@
-function MobileAgent(id) {
+function MobileAgent(id, direction) {
     this.id = id
 
-    this.direction = {deltaX:0, deltaY:1};
+    this.direction = direction;
     this.increment = 1;
 
     function computeNextPosition() {
         if ((this.direction.deltaY >= 0 && this.direction.deltaX > 0) ||
-            (this.direction.deltaY < 0 && this.direction.deltaX < 0)) {
+            (this.direction.deltaY <= 0 && this.direction.deltaX < 0)) {
             var tmp = -this.direction.deltaY;
             this.direction.deltaY = this.direction.deltaX;
             this.direction.deltaX = tmp;
@@ -41,5 +41,7 @@ function MobileAgent(id) {
 
     this.onInteraction = function(){
         computeNextPosition.call(this);
+
+        return {direction: direction};
     };
 }

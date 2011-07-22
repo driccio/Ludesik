@@ -48,3 +48,33 @@ head, body{
     background: #999;
     position: absolute;
 }
+
+.right-arrow{
+    background-image: url('../images/arrow.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.bottom-arrow{
+    background-image: url('../images/arrow.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+}
+
+.left-arrow{
+    background-image: url('../images/arrow.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+}
+
+.top-arrow{
+    background-image: url('../images/arrow.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+}

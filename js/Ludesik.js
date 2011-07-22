@@ -12,14 +12,15 @@ function Ludesik(renderer, menu){
     var speedFrequencyBtn;
 
     function addMobileAgent(position) {
-        map.addMobileAgent(counter, 0, position);
-        renderer.addMobileAgent(counter, position);
+        var defaultDirection = {deltaX: 1, deltaY: 0};
+        map.addMobileAgent(counter, position, defaultDirection);
+        renderer.addMobileAgent(counter, position, defaultDirection);
 
         counter++;
     }
 
     function onMobileAgentInteraction(id) {
-        map.onMobileAgentInteraction(id);
+        return map.onMobileAgentInteraction(id);
     }
 
 
