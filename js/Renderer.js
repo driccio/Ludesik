@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2011 David Bruant & Damien Riccio
+ * MIT Licence
+ */
+
 function Renderer(container){
     var MAX_X = 9, MAX_Y = 9;
     var squares = []; // A weakmap would be prefered to have O(1)-ish look-up
