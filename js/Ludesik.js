@@ -46,7 +46,7 @@ function Ludesik(renderer, menu){
         isPlaying = true;
         playBtn.disabled = true;
         pauseBtn.disabled = false;
-        intervalRef = setInterval(tick, frequencyInput.value);
+        intervalRef = setInterval(tick, 60/parseInt(frequencyInput.value) * 1000);
     }
 
     function pause () {
@@ -56,8 +56,8 @@ function Ludesik(renderer, menu){
         clearInterval(intervalRef);
     }
 
-    function slowFrequency() {
-        frequencyInput.value = Number(frequencyInput.value) - 100;
+    function decreaseFrequency() {
+        frequencyInput.value = parseInt(frequencyInput.value) - 1;
 
         if (frequencyInput.value === 0) {
             slowFrequencyBtn.disabled = true;
@@ -69,8 +69,8 @@ function Ludesik(renderer, menu){
         }
     }
 
-    function speedFrequency() {
-        frequencyInput.value = Number(frequencyInput.value) + 100;
+    function increaseFrequency() {
+        frequencyInput.value = parseInt(frequencyInput.value) + 1;
 
         if (isPlaying) {
             pause();
@@ -158,16 +158,17 @@ function Ludesik(renderer, menu){
 
         slowFrequencyBtn =  document.createElement('button');
         slowFrequencyBtn.textContent = '-';
-        slowFrequencyBtn.addEventListener('click', slowFrequency, false);
+        slowFrequencyBtn.addEventListener('click', decreaseFrequency, false);
         frequencyContainer.appendChild(slowFrequencyBtn);
 
         frequencyInput = document.createElement('input');
-        frequencyInput.value = 1000;
+        frequencyInput.type = "number";
+        frequencyInput.value = 120;
         frequencyContainer.appendChild(frequencyInput);
 
         speedFrequencyBtn =  document.createElement('button');
         speedFrequencyBtn.textContent = '+';
-        speedFrequencyBtn.addEventListener('click', speedFrequency, false);
+        speedFrequencyBtn.addEventListener('click', increaseFrequency, false);
         frequencyContainer.appendChild(speedFrequencyBtn);
 
         menu.appendChild(frequencyContainer);
