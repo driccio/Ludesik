@@ -17,6 +17,7 @@ function Ludesik(renderer, menu){
     var speedFrequencyBtn;
     var saveBtn;
     var savedStateContainer;
+    var savedStateCount = 0;
 
     function addMobileAgentWithDirection(position, direction) {
         map.addMobileAgent(counter, position, direction);
@@ -102,8 +103,9 @@ function Ludesik(renderer, menu){
     }
 
     function addSavedStateIntoContainer(serializedState) {
-        var savedState =  document.createElement('div');
-        savedState.textContent = 'Test ' + serializedState;
+        var savedState =  document.createElement('li');
+        savedState.textContent = 'State ' + (++savedStateCount);
+        savedState.contentEditable = true;
         savedState.addEventListener('click', function (){loadState(serializedState)}, false);
         savedStateContainer.appendChild(savedState);
     }
@@ -206,7 +208,7 @@ function Ludesik(renderer, menu){
         menu.appendChild(pauseBtn);
 
         saveBtn =  document.createElement('button');
-        saveBtn.textContent = 'Sauver';
+        saveBtn.textContent = 'Save';
         saveBtn.addEventListener('click', saveState, false);
         menu.appendChild(saveBtn);
 
@@ -219,7 +221,7 @@ function Ludesik(renderer, menu){
 
         frequencyInput = document.createElement('input');
         frequencyInput.type = "number";
-        frequencyInput.value = 150;
+        frequencyInput.value = 300;
         frequencyContainer.appendChild(frequencyInput);
 
         speedFrequencyBtn =  document.createElement('button');
@@ -230,7 +232,8 @@ function Ludesik(renderer, menu){
         menu.appendChild(frequencyContainer);
 
 
-        savedStateContainer = document.createElement('div');
+        savedStateContainer = document.createElement('ul');
+        savedStateContainer.className = "saved-states";
         menu.appendChild(savedStateContainer);
 
         importStateFromCurrentUrlIfNeeded();

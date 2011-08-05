@@ -49,6 +49,24 @@ head, body{
     vertical-align: top;
 }
 
+.saved-states{
+    margin: 0;
+    padding: 0;
+}
+
+    ul.saved-states li{
+        cursor: pointer;
+        list-style: none;
+        margin: 4px;
+        padding: 4px;
+    }
+    
+    ul.saved-states li:hover{
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+    }
+
+
 .mobile-agent{
     width: 60px; /* Smaller than .map-cell width to fit */
     height: 60px;/* Smaller than .map-cell height to fit */
