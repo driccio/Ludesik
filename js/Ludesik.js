@@ -108,7 +108,7 @@ function Ludesik(renderer, menu){
         var url = '';
 
         url += frequencyInput.value;
-        url += ';9;9';
+        url += ';9;9'; // map size. May be changeable eventually.
 
          currentPositions.positions.forEach(
 			function (e, i, a) {
@@ -118,25 +118,42 @@ function Ludesik(renderer, menu){
 
         addSavedStateIntoContainer(url)
 
-        console.log(url);
+        // console.log(url);
     }
 
     renderer.setOnSquareInteraction(addMobileAgent);
     renderer.setOnMobileAgentInteraction(onMobileAgentInteraction);
 
     (function(){
-        var ids = map.getWallIds();
+        // INIT SOUNDS
+        var walls = map.getWalls();
         var soundsInit = {};
 
-        ids.forEach(function(id, i){
-            // not our files. Begging for people to create us awesome tones
-            soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + i%9 + ".ogg";
+        walls.forEach(function(wall, i){
+            console.log("soundinit", wall, i);
+            id = wall.cardinal + wall.index;
+            
+            if(wall.cardinal === "N" || wall.cardinal === "S"){
+                soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + wall.index + ".ogg";
+            }
+            else{
+                soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + (8 - wall.index)  + ".ogg";
+            }
+            
+            //if()
+            
+            /*if(i){
+                    // not our files. Begging for people to create us awesome tones
+                    soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + i%9 + ".ogg";
+                
+                
+                }
+        */
         });
 
         soundPlayer = new SoundPlayer(document.getElementById('audios'), soundsInit);
-    })();
-
-    (function() {
+        
+        // MENU
         playBtn =  document.createElement('button');
         playBtn.textContent = 'Play';
         playBtn.disabled = false;
@@ -163,7 +180,7 @@ function Ludesik(renderer, menu){
 
         frequencyInput = document.createElement('input');
         frequencyInput.type = "number";
-        frequencyInput.value = 120;
+        frequencyInput.value = 150;
         frequencyContainer.appendChild(frequencyInput);
 
         speedFrequencyBtn =  document.createElement('button');
