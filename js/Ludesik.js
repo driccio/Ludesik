@@ -210,6 +210,11 @@ function Ludesik(renderer, menu){
         saveBtn.addEventListener('click', saveState, false);
         menu.appendChild(saveBtn);
 
+        clearBtn =  document.createElement('button');
+        clearBtn.textContent = 'Nettoyer';
+        clearBtn.addEventListener('click', clear, false);
+        menu.appendChild(clearBtn);
+
         var frequencyContainer = document.createElement('div');
 
         slowFrequencyBtn =  document.createElement('button');
