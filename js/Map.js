@@ -13,8 +13,8 @@ function Map() {
 		return (mobileAgentsPositions[id].y * 9) + mobileAgentsPositions[id].x;
 	}
 
-    this.getWallIds = function () {
-        return Object.keys(walls);
+    this.getWalls = function () {
+        return Object.keys(walls).map(function(n){return walls[n];});
     }
 
     /**
@@ -165,13 +165,13 @@ function Map() {
 		    mobileAgentPerSquare[i] = [];
 		 }
 		 
-		 walls = new Object();
+		 walls = {};
 		 
 		 for (var i = 0 ; i < 9 ; i++) {
 			walls["W" + i] = new Wall(i, 'W');
-			walls["N" + i] = new Wall(i + 9, 'N');
-			walls["E" + i] = new Wall(i + 18, 'E');
-			walls["S" + i] = new Wall(i + 27, 'S');
+			walls["N" + i] = new Wall(i, 'N');
+			walls["E" + i] = new Wall(i, 'E');
+			walls["S" + i] = new Wall(i, 'S');
 		 }
 		 		    
 	}).call(this);

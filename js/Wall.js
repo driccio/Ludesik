@@ -3,8 +3,8 @@
  * MIT Licence
  */
 
-function Wall(id, cardinal) {
-    this.id = id;
+function Wall(index, cardinal) {
+    this.index = index;
     this.cardinal = cardinal;
 
 	this.onCollision = function(number){};

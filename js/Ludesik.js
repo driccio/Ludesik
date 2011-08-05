@@ -46,7 +46,7 @@ function Ludesik(renderer, menu){
         isPlaying = true;
         playBtn.disabled = true;
         pauseBtn.disabled = false;
-        intervalRef = setInterval(tick, frequencyInput.value);
+        intervalRef = setInterval(tick, 60/parseInt(frequencyInput.value) * 1000);
     }
 
     function pause () {
@@ -56,8 +56,8 @@ function Ludesik(renderer, menu){
         clearInterval(intervalRef);
     }
 
-    function slowFrequency() {
-        frequencyInput.value = Number(frequencyInput.value) - 100;
+    function decreaseFrequency() {
+        frequencyInput.value = parseInt(frequencyInput.value) - 1;
 
         if (frequencyInput.value === 0) {
             slowFrequencyBtn.disabled = true;
@@ -69,8 +69,8 @@ function Ludesik(renderer, menu){
         }
     }
 
-    function speedFrequency() {
-        frequencyInput.value = Number(frequencyInput.value) + 100;
+    function increaseFrequency() {
+        frequencyInput.value = parseInt(frequencyInput.value) + 1;
 
         if (isPlaying) {
             pause();
@@ -113,9 +113,11 @@ function Ludesik(renderer, menu){
 
         var serializedState = '';
 
+
         serializedState += '1;';
         serializedState += frequencyInput.value;
-        serializedState += ';9;9';
+        serializedState += ';9;9'; // map size. May be changeable eventually.
+
 
          currentPositions.positions.forEach(
 			function (e, i, a) {
@@ -162,18 +164,35 @@ function Ludesik(renderer, menu){
     renderer.setOnMobileAgentInteraction(onMobileAgentInteraction);
 
     (function(){
-        var ids = map.getWallIds();
+        // INIT SOUNDS
+        var walls = map.getWalls();
         var soundsInit = {};
 
-        ids.forEach(function(id, i){
-            // not our files. Begging for people to create us awesome tones
-            soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + i%9 + ".ogg";
+        walls.forEach(function(wall, i){
+            console.log("soundinit", wall, i);
+            id = wall.cardinal + wall.index;
+            
+            if(wall.cardinal === "N" || wall.cardinal === "S"){
+                soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + wall.index + ".ogg";
+            }
+            else{
+                soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + (8 - wall.index)  + ".ogg";
+            }
+            
+            //if()
+            
+            /*if(i){
+                    // not our files. Begging for people to create us awesome tones
+                    soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + i%9 + ".ogg";
+                
+                
+                }
+        */
         });
 
         soundPlayer = new SoundPlayer(document.getElementById('audios'), soundsInit);
-    })();
-
-    (function() {
+        
+        // MENU
         playBtn =  document.createElement('button');
         playBtn.textContent = 'Play';
         playBtn.disabled = false;
@@ -195,16 +214,17 @@ function Ludesik(renderer, menu){
 
         slowFrequencyBtn =  document.createElement('button');
         slowFrequencyBtn.textContent = '-';
-        slowFrequencyBtn.addEventListener('click', slowFrequency, false);
+        slowFrequencyBtn.addEventListener('click', decreaseFrequency, false);
         frequencyContainer.appendChild(slowFrequencyBtn);
 
         frequencyInput = document.createElement('input');
-        frequencyInput.value = 1000;
+        frequencyInput.type = "number";
+        frequencyInput.value = 150;
         frequencyContainer.appendChild(frequencyInput);
 
         speedFrequencyBtn =  document.createElement('button');
         speedFrequencyBtn.textContent = '+';
-        speedFrequencyBtn.addEventListener('click', speedFrequency, false);
+        speedFrequencyBtn.addEventListener('click', increaseFrequency, false);
         frequencyContainer.appendChild(speedFrequencyBtn);
 
         menu.appendChild(frequencyContainer);

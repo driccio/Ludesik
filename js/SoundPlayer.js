@@ -6,6 +6,8 @@
 function SoundPlayer(container, sounds) {
     var audios;
 
+    console.log(sounds);
+
     this.playAll = function(soundIds){
         soundIds.forEach(function(id){
             console.log(id, audios[id]);
