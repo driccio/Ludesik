@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2011 David Bruant & Damien Riccio
+ * MIT Licence
+ */
+
 function Renderer(container){
     var MAX_X = 9, MAX_Y = 9;
     var squares = []; // A weakmap would be prefered to have O(1)-ish look-up
@@ -28,6 +33,11 @@ function Renderer(container){
         maElement.style.left = (pos.x*61) + 1 + 'px';
 
         maElement.style.backgroundColor = randomColorString();
+        
+        var span = document.createElement('span');
+        span.textContent = "❯";
+        
+        maElement.appendChild(span);
 
         maElement.addEventListener('click', function(){
             var newInformations = onMobileAgentInteraction(maId);
@@ -60,6 +70,15 @@ function Renderer(container){
     };
 
     function refreshArrow(maElement, direction) {
+        var angle = Math.atan2(direction.deltaY, direction.deltaX) / Math.PI * 180;
+        console.log(angle);
+        
+        maElement.style.mozTransform = "rotate("+angle+"deg)"; // doesn't work on Firefox
+        maElement.style.webkitTransform = "rotate("+angle+"deg)";
+
+        
+        /*
+    
         if (direction.deltaY >= 0 && direction.deltaX > 0){
             maElement.className += ' right-arrow';
         } else {
@@ -72,7 +91,9 @@ function Renderer(container){
                     maElement.className += ' bottom-arrow';
                 }
             }
-        }
+        }*/
+        
+        
     }
 
     this.refresh = function(state){
@@ -88,6 +109,7 @@ function Renderer(container){
                 var direction = e.direction;
                 maElement.className = "mobile-agent";
                 refreshArrow(maElement, direction);
+
             }
         );
     };

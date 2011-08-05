@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2011 David Bruant & Damien Riccio
+ * MIT Licence
+ */
+
 function Map() {
 	var walls;
 	var mobileAgents = [];

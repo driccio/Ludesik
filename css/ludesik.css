@@ -47,9 +47,17 @@ head, body{
     height: 60px;/* Smaller than .map-cell height to fit */
     background: #999;
     position: absolute;
+    text-align: center;
+    line-height: 100%;
 }
 
-.right-arrow{
+    .mobile-agent > span{
+        height: 100%;
+        vertical-align: middle;
+    }
+
+
+/*.right-arrow{
     background-image: url('../images/arrow.png');
     background-repeat: no-repeat;
     background-position: center;
@@ -77,4 +85,4 @@ head, body{
     background-position: center;
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);
-}
+}*/
