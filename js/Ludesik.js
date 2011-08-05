@@ -84,41 +84,80 @@ function Ludesik(renderer, menu){
         renderer.clear();
     }
 
-    function loadState(url) {
+    function loadState(serializedState) {
         clear();
 
-        var split = url.split(";");
-        frequencyInput.value = split[0];
+        var split = serializedState.split(";");
+        frequencyInput.value = split[1];
 
-        for (var i=3; i< split.length; i+=4) {
-            addMobileAgentWithDirection({x: Number(split[i]), y: Number(split[i+1])}, {deltaX: Number(split[i+2]), deltaY: Number(split[i+3])});
+        if (serializedState[0] === '1') {
+            for (var i=4; i< split.length; i+=4) {
+                addMobileAgentWithDirection({x: Number(split[i]), y: Number(split[i+1])}, {deltaX: Number(split[i+2]), deltaY: Number(split[i+3])});
+            }
         }
+
+        var splittedUrl = window.location.href.split('#');
+
+        window.location.href = splittedUrl[0] + '#' + serializedState;
     }
 
-    function addSavedStateIntoContainer(url) {
+    function addSavedStateIntoContainer(serializedState) {
         var savedState =  document.createElement('div');
-        savedState.textContent = 'Test ' + url;
-        savedState.addEventListener('click', function (){loadState(url)}, false);
+        savedState.textContent = 'Test ' + serializedState;
+        savedState.addEventListener('click', function (){loadState(serializedState)}, false);
         savedStateContainer.appendChild(savedState);
     }
 
     function saveState() {
         var currentPositions = map.getPositions();
 
-        var url = '';
+        var serializedState = '';
 
-        url += frequencyInput.value;
-        url += ';9;9'; // map size. May be changeable eventually.
+
+        serializedState += '1;';
+        serializedState += frequencyInput.value;
+        serializedState += ';9;9'; // map size. May be changeable eventually.
+
 
          currentPositions.positions.forEach(
 			function (e, i, a) {
-                url += ';' + e.position.x + ';' + e.position.y + ';' + e.direction.deltaX + ';' + e.direction.deltaY;
+                serializedState += ';' + e.position.x + ';' + e.position.y + ';' + e.direction.deltaX + ';' + e.direction.deltaY;
             }
         );
 
-        addSavedStateIntoContainer(url)
+        addSavedStateIntoContainer(serializedState)
 
-        // console.log(url);
+        console.log(serializedState);
+    }
+
+    function importState(url) {
+        if (!url) {
+            // TODO: Set an error message
+            return;
+        }
+
+        var splittedUrl = url.split('#');
+
+        if (splittedUrl.length !== 2) {
+            // TODO: Set an error message
+            return;
+        }
+
+        var splittedSerializedState = splittedUrl[1].split('=');
+
+        if (splittedSerializedState.length !== 2 && splittedSerializedState[0] !== 's') {
+            // TODO: Set an error message
+            return;
+        }
+
+        addSavedStateIntoContainer(splittedSerializedState[1]);
+        loadState(splittedSerializedState[1]);
+    }
+
+    function importStateFromCurrentUrlIfNeeded() {
+        if (window.location.href.indexOf('#') !== -1) {
+            importState(window.location.href);
+        }
     }
 
     renderer.setOnSquareInteraction(addMobileAgent);
@@ -193,5 +232,7 @@ function Ludesik(renderer, menu){
 
         savedStateContainer = document.createElement('div');
         menu.appendChild(savedStateContainer);
+
+        importStateFromCurrentUrlIfNeeded();
     }).call(this);
 }
