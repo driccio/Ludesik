@@ -95,6 +95,10 @@ function Ludesik(renderer, menu){
                 addMobileAgentWithDirection({x: Number(split[i]), y: Number(split[i+1])}, {deltaX: Number(split[i+2]), deltaY: Number(split[i+3])});
             }
         }
+
+        var splittedUrl = window.location.href.split('#');
+
+        window.location.href = splittedUrl[0] + '#' + serializedState;
     }
 
     function addSavedStateIntoContainer(serializedState) {
