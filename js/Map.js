@@ -62,22 +62,22 @@ function Map() {
 
 				if (x < 1 && e.direction.deltaX < 0) {
 					westSiteCollision = true;
-					mobileAgentsPositions[e.id].x = 0;
+					mobileAgentsPositions[e.id].x = -x;
 				}
 				
 				if (y < 1 && e.direction.deltaY < 0) {
 					northSiteCollision = true;
-					mobileAgentsPositions[e.id].y = 0;
+					mobileAgentsPositions[e.id].y = -y;
 				}
 				
 				if (x >= 8 && e.direction.deltaX > 0) {
 					eastSiteCollision = true;
-					mobileAgentsPositions[e.id].x = 8;
+					mobileAgentsPositions[e.id].x = 16-x;
 				}
 				
 				if (y >= 8 && e.direction.deltaY > 0) {
 					southSiteCollision = true;
-					mobileAgentsPositions[e.id].y = 8;
+					mobileAgentsPositions[e.id].y = 16-y;
 				}
 				
 				if (westSiteCollision) {
