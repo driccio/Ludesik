@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2011 David Bruant & Damien Riccio
+ * MIT Licence
+ */
+
 function Map() {
 	var walls;
 	var mobileAgents = [];
@@ -127,7 +132,32 @@ function Map() {
 
 		return state;
 	};
-	
+
+    this.getPositions = function() {
+        var state = new Object();
+
+        state.positions = new Array();
+
+        mobileAgents.forEach(
+			function (e, i, a) {
+                state.positions.push({id:e.id, position:mobileAgentsPositions[e.id], direction:e.direction});
+            }
+        );
+
+        return state;
+    };
+
+    this.clear = function() {
+        mobileAgents = [];
+	    mobileAgentsPositions = [];
+
+        mobileAgentPerSquare = [];
+
+	    for(i = 0; i<9*9 ; i++){
+		    mobileAgentPerSquare[i] = [];
+		 }
+    };
+
 	(function() {
 		 var i;
 		 

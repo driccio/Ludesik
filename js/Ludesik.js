@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2011 David Bruant & Damien Riccio
+ * MIT Licence
+ */
+
 function Ludesik(renderer, menu){
     var map = new Map();
     var counter = 0;
@@ -10,20 +15,24 @@ function Ludesik(renderer, menu){
     var slowFrequencyBtn;
     var frequencyInput;
     var speedFrequencyBtn;
+    var saveBtn;
+    var savedStateContainer;
+
+    function addMobileAgentWithDirection(position, direction) {
+        map.addMobileAgent(counter, position, direction);
+        renderer.addMobileAgent(counter, position, direction);
+
+        counter++;
+    }
 
     function addMobileAgent(position) {
         var defaultDirection = {deltaX: 1, deltaY: 0};
-        map.addMobileAgent(counter, position, defaultDirection);
-        renderer.addMobileAgent(counter, position, defaultDirection);
-
-        counter++;
+        addMobileAgentWithDirection(position, defaultDirection);
     }
 
     function onMobileAgentInteraction(id) {
         return map.onMobileAgentInteraction(id);
     }
-
-
 
     function tick() {
         var result = map.nextStep();
@@ -69,6 +78,49 @@ function Ludesik(renderer, menu){
         }
     }
 
+    function clear() {
+        counter = 0;
+        map.clear();
+        renderer.clear();
+    }
+
+    function loadState(url) {
+        clear();
+
+        var split = url.split(";");
+        frequencyInput.value = split[0];
+
+        for (var i=3; i< split.length; i+=4) {
+            addMobileAgentWithDirection({x: Number(split[i]), y: Number(split[i+1])}, {deltaX: Number(split[i+2]), deltaY: Number(split[i+3])});
+        }
+    }
+
+    function addSavedStateIntoContainer(url) {
+        var savedState =  document.createElement('div');
+        savedState.textContent = 'Test ' + url;
+        savedState.addEventListener('click', function (){loadState(url)}, false);
+        savedStateContainer.appendChild(savedState);
+    }
+
+    function saveState() {
+        var currentPositions = map.getPositions();
+
+        var url = '';
+
+        url += frequencyInput.value;
+        url += ';9;9';
+
+         currentPositions.positions.forEach(
+			function (e, i, a) {
+                url += ';' + e.position.x + ';' + e.position.y + ';' + e.direction.deltaX + ';' + e.direction.deltaY;
+            }
+        );
+
+        addSavedStateIntoContainer(url)
+
+        console.log(url);
+    }
+
     renderer.setOnSquareInteraction(addMobileAgent);
     renderer.setOnMobileAgentInteraction(onMobileAgentInteraction);
 
@@ -97,6 +149,11 @@ function Ludesik(renderer, menu){
         pauseBtn.addEventListener('click', pause, false);
         menu.appendChild(pauseBtn);
 
+        saveBtn =  document.createElement('button');
+        saveBtn.textContent = 'Sauver';
+        saveBtn.addEventListener('click', saveState, false);
+        menu.appendChild(saveBtn);
+
         var frequencyContainer = document.createElement('div');
 
         slowFrequencyBtn =  document.createElement('button');
@@ -114,5 +171,9 @@ function Ludesik(renderer, menu){
         frequencyContainer.appendChild(speedFrequencyBtn);
 
         menu.appendChild(frequencyContainer);
+
+
+        savedStateContainer = document.createElement('div');
+        menu.appendChild(savedStateContainer);
     }).call(this);
 }

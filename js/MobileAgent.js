@@ -1,10 +1,15 @@
+/**
+ * Copyright (c) 2011 David Bruant & Damien Riccio
+ * MIT Licence
+ */
+
 function MobileAgent(id, direction) {
     this.id = id
 
     this.direction = direction;
     this.increment = 1;
 
-    function computeNextPosition() {
+    function computeNextDirection() {
         if ((this.direction.deltaY >= 0 && this.direction.deltaX > 0) ||
             (this.direction.deltaY <= 0 && this.direction.deltaX < 0)) {
             var tmp = -this.direction.deltaY;
@@ -36,11 +41,11 @@ function MobileAgent(id, direction) {
     };
 
     this.onMobileAgentsCollision = function(mobileAgents){
-        computeNextPosition.call(this);
+        computeNextDirection.call(this);
     };
 
     this.onInteraction = function(){
-        computeNextPosition.call(this);
+        computeNextDirection.call(this);
 
         return {direction: direction};
     };
