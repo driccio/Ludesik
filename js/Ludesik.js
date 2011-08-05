@@ -84,42 +84,45 @@ function Ludesik(renderer, menu){
         renderer.clear();
     }
 
-    function loadState(url) {
+    function loadState(version, serializedState) {
         clear();
 
-        var split = url.split(";");
+        var split = serializedState.split(";");
         frequencyInput.value = split[0];
 
-        for (var i=3; i< split.length; i+=4) {
-            addMobileAgentWithDirection({x: Number(split[i]), y: Number(split[i+1])}, {deltaX: Number(split[i+2]), deltaY: Number(split[i+3])});
+        if (version === 1) {
+            for (var i=3; i< split.length; i+=4) {
+                addMobileAgentWithDirection({x: Number(split[i]), y: Number(split[i+1])}, {deltaX: Number(split[i+2]), deltaY: Number(split[i+3])});
+            }
         }
     }
 
-    function addSavedStateIntoContainer(url) {
+    function addSavedStateIntoContainer(serializedState) {
         var savedState =  document.createElement('div');
-        savedState.textContent = 'Test ' + url;
-        savedState.addEventListener('click', function (){loadState(url)}, false);
+        savedState.textContent = 'Test ' + serializedState;
+        savedState.addEventListener('click', function (){loadState(1, serializedState)}, false);
         savedStateContainer.appendChild(savedState);
     }
 
     function saveState() {
         var currentPositions = map.getPositions();
 
-        var url = '';
+        var serializedState = '';
 
-        url += frequencyInput.value;
-        url += ';9;9';
+        serializedState += frequencyInput.value;
+        serializedState += ';9;9';
 
          currentPositions.positions.forEach(
 			function (e, i, a) {
-                url += ';' + e.position.x + ';' + e.position.y + ';' + e.direction.deltaX + ';' + e.direction.deltaY;
+                serializedState += ';' + e.position.x + ';' + e.position.y + ';' + e.direction.deltaX + ';' + e.direction.deltaY;
             }
         );
 
-        addSavedStateIntoContainer(url)
+        addSavedStateIntoContainer(serializedState)
 
-        console.log(url);
+        console.log(serializedState);
     }
+
 
     renderer.setOnSquareInteraction(addMobileAgent);
     renderer.setOnMobileAgentInteraction(onMobileAgentInteraction);
