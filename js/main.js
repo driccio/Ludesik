@@ -10,12 +10,12 @@
     function init(){
         var container = document.querySelector('.map-container'); // only the first one
         var menu = document.getElementById('menu');
-        var frequencyInputs = document.getElementsByClassName('frequency-input');
+        var tempoInputs = document.getElementsByClassName('tempo-input');
 
         document.addEventListener("tempoChangeEvent",
                                   function (evt) {
-                                      for (var i = 0; i < frequencyInputs.length; i++) {
-                                            frequencyInputs[i].value = evt.tempo;
+                                      for (var i = 0; i < tempoInputs.length; i++) {
+                                            tempoInputs[i].value = evt.tempo;
                                       }
                                   },
                                   false
@@ -23,8 +23,8 @@
 
         ludesik = new Ludesik(/*new SoundPlayer(), */new Renderer(container), menu);
 
-        for (var i = 0; i < frequencyInputs.length; i++) {
-            frequencyInputs[i].addEventListener('change',
+        for (var i = 0; i < tempoInputs.length; i++) {
+            tempoInputs[i].addEventListener('change',
                                                  function (evt){
                                                      ludesik.setTempo(parseInt(evt.currentTarget.value));
                                                  },

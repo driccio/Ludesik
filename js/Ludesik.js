@@ -14,9 +14,8 @@ function Ludesik(renderer, menu){
 
     var playBtns;
     var pauseBtns;
-    var slowFrequencyBtns;
-    //var frequencyInput;
-    var speedFrequencyBtns;
+    var slowTempoBtns;
+    var speedTempoBtns;
     var saveBtns;
     var clearBtns;
     var savedStateContainers;
@@ -92,8 +91,9 @@ function Ludesik(renderer, menu){
     function setTempo(_tempo) {
         tempo = _tempo;
 
-        if (tempo === 0) {
-            callFunctionOnItems(slowFrequencyBtns,
+        if (tempo <= 0) {
+            tempo = 0;
+            callFunctionOnItems(slowTempoBtns,
                 function (btn) {
                     btn.disabled = true;
                 }
@@ -111,11 +111,11 @@ function Ludesik(renderer, menu){
         document.dispatchEvent(event);
     }
 
-    function decreaseFrequency() {
+    function decreaseTempo() {
         setTempo(tempo-1);
     }
 
-    function increaseFrequency() {
+    function increaseTempo() {
         setTempo(tempo+1);
     }
 
@@ -129,8 +129,7 @@ function Ludesik(renderer, menu){
         clear();
 
         var split = serializedState.split(";");
-        //frequencyInput.value = split[1];
-        tempo = split[1];
+        tempo = Number(split[1]);
 
         if (serializedState[0] === '1') {
             for (var i=4; i< split.length; i+=4) {
@@ -278,17 +277,17 @@ function Ludesik(renderer, menu){
             }
         );
 
-        slowFrequencyBtns =  menu.getElementsByClassName('decrease-tempo-control');
-        callFunctionOnItems(slowFrequencyBtns,
+        slowTempoBtns =  menu.getElementsByClassName('decrease-tempo-control');
+        callFunctionOnItems(slowTempoBtns,
             function (btn) {
-                btn.addEventListener('click', decreaseFrequency, false);
+                btn.addEventListener('click', decreaseTempo, false);
             }
         );
 
-        speedFrequencyBtns =  menu.getElementsByClassName('increase-tempo-control');
-        callFunctionOnItems(speedFrequencyBtns,
+        speedTempoBtns =  menu.getElementsByClassName('increase-tempo-control');
+        callFunctionOnItems(speedTempoBtns,
             function (btn) {
-                btn.addEventListener('click', increaseFrequency, false);
+                btn.addEventListener('click', increaseTempo, false);
             }
         );
 
