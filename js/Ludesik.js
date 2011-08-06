@@ -10,13 +10,22 @@ function Ludesik(renderer, menu){
     var intervalRef;
     var isPlaying = false;
 
-    var playBtn;
-    var pauseBtn;
-    var slowFrequencyBtn;
-    var frequencyInput;
-    var speedFrequencyBtn;
-    var saveBtn;
-    var savedStateContainer;
+    var tempo;
+
+    var playBtns;
+    var pauseBtns;
+    var slowFrequencyBtns;
+    //var frequencyInput;
+    var speedFrequencyBtns;
+    var saveBtns;
+    var clearBtns;
+    var savedStateContainers;
+
+    function callFunctionOnItems (items, f) {
+        for (var i = 0; i < items.length; i++) {
+            f(items[i]);
+        }
+    }
 
     function addMobileAgentWithDirection(position, direction) {
         map.addMobileAgent(counter, position, direction);
@@ -44,38 +53,69 @@ function Ludesik(renderer, menu){
 
     function play () {
         isPlaying = true;
-        playBtn.disabled = true;
-        pauseBtn.disabled = false;
-        intervalRef = setInterval(tick, 60/parseInt(frequencyInput.value) * 1000);
+
+        callFunctionOnItems(playBtns,
+            function (btn) {
+                btn.disabled = true;
+            }
+        );
+
+        callFunctionOnItems(pauseBtns,
+            function (btn) {
+                btn.disabled = false;
+            }
+        );
+
+        intervalRef = setInterval(tick, (60/tempo) * 1000);
     }
 
     function pause () {
         isPlaying = false;
-        playBtn.disabled = false;
-        pauseBtn.disabled = true;
+
+        callFunctionOnItems(playBtns,
+            function (btn) {
+                btn.disabled = false;
+            }
+        );
+
+        callFunctionOnItems(pauseBtns,
+            function (btn) {
+                btn.disabled = true;
+            }
+        );
+
         clearInterval(intervalRef);
     }
 
-    function decreaseFrequency() {
-        frequencyInput.value = parseInt(frequencyInput.value) - 1;
+    function setTempo(_tempo) {
+        tempo = _tempo;
 
-        if (frequencyInput.value === 0) {
-            slowFrequencyBtn.disabled = true;
+        if (tempo === 0) {
+            callFunctionOnItems(slowFrequencyBtns,
+                function (btn) {
+                    btn.disabled = true;
+                }
+            );
         }
 
         if (isPlaying) {
             pause();
             play();
         }
+
+        // TODO : launch an event
+        var event = document.createEvent("Event");
+        event.initEvent("tempoChangeEvent", false, true);
+        event.tempo = tempo;
+        document.dispatchEvent(event);
+    }
+
+    function decreaseFrequency() {
+        setTempo(tempo-1);
     }
 
     function increaseFrequency() {
-        frequencyInput.value = parseInt(frequencyInput.value) + 1;
-
-        if (isPlaying) {
-            pause();
-            play();
-        }
+        setTempo(tempo+1);
     }
 
     function clear() {
@@ -88,7 +128,8 @@ function Ludesik(renderer, menu){
         clear();
 
         var split = serializedState.split(";");
-        frequencyInput.value = split[1];
+        //frequencyInput.value = split[1];
+        tempo = split[1];
 
         if (serializedState[0] === '1') {
             for (var i=4; i< split.length; i+=4) {
@@ -105,7 +146,12 @@ function Ludesik(renderer, menu){
         var savedState =  document.createElement('div');
         savedState.textContent = 'Test ' + serializedState;
         savedState.addEventListener('click', function (){loadState(serializedState)}, false);
-        savedStateContainer.appendChild(savedState);
+
+        callFunctionOnItems(savedStateContainers,
+            function (container) {
+                container.appendChild(savedState);
+            }
+        );
     }
 
     function saveState() {
@@ -115,7 +161,7 @@ function Ludesik(renderer, menu){
 
 
         serializedState += '1;';
-        serializedState += frequencyInput.value;
+        serializedState += tempo;
         serializedState += ';9;9'; // map size. May be changeable eventually.
 
 
@@ -125,9 +171,7 @@ function Ludesik(renderer, menu){
             }
         );
 
-        addSavedStateIntoContainer(serializedState)
-
-        console.log(serializedState);
+        addSavedStateIntoContainer(serializedState);
     }
 
     function importState(url) {
@@ -160,6 +204,14 @@ function Ludesik(renderer, menu){
         }
     }
 
+    /* Yes, setTempo is a public method and it calls the setTempo private method.
+    * The reason of that is security. Indeed the client could override setTempo method
+    * but some others private methods depends on setTempo method. So having a private
+    * setTempo method is a way to warranty that the behaviour of these methods will be allways the same */
+    this.setTempo = function (_tempo) {
+        setTempo(_tempo);
+    }
+
     renderer.setOnSquareInteraction(addMobileAgent);
     renderer.setOnMobileAgentInteraction(onMobileAgentInteraction);
 
@@ -169,7 +221,7 @@ function Ludesik(renderer, menu){
         var soundsInit = {};
 
         walls.forEach(function(wall, i){
-            console.log("soundinit", wall, i);
+            //console.log("soundinit", wall, i);
             id = wall.cardinal + wall.index;
             
             if(wall.cardinal === "N" || wall.cardinal === "S"){
@@ -191,52 +243,57 @@ function Ludesik(renderer, menu){
         });
 
         soundPlayer = new SoundPlayer(document.getElementById('audios'), soundsInit);
-        
-        // MENU
-        playBtn =  document.createElement('button');
-        playBtn.textContent = 'Play';
-        playBtn.disabled = false;
-        playBtn.addEventListener('click', play, false);
-        menu.appendChild(playBtn);
-
-        pauseBtn =  document.createElement('button');
-        pauseBtn.textContent = 'Pause';
-        pauseBtn.disabled = true;
-        pauseBtn.addEventListener('click', pause, false);
-        menu.appendChild(pauseBtn);
-
-        saveBtn =  document.createElement('button');
-        saveBtn.textContent = 'Sauver';
-        saveBtn.addEventListener('click', saveState, false);
-        menu.appendChild(saveBtn);
-
-        clearBtn =  document.createElement('button');
-        clearBtn.textContent = 'Nettoyer';
-        clearBtn.addEventListener('click', clear, false);
-        menu.appendChild(clearBtn);
-
-        var frequencyContainer = document.createElement('div');
-
-        slowFrequencyBtn =  document.createElement('button');
-        slowFrequencyBtn.textContent = '-';
-        slowFrequencyBtn.addEventListener('click', decreaseFrequency, false);
-        frequencyContainer.appendChild(slowFrequencyBtn);
-
-        frequencyInput = document.createElement('input');
-        frequencyInput.type = "number";
-        frequencyInput.value = 150;
-        frequencyContainer.appendChild(frequencyInput);
-
-        speedFrequencyBtn =  document.createElement('button');
-        speedFrequencyBtn.textContent = '+';
-        speedFrequencyBtn.addEventListener('click', increaseFrequency, false);
-        frequencyContainer.appendChild(speedFrequencyBtn);
-
-        menu.appendChild(frequencyContainer);
 
 
-        savedStateContainer = document.createElement('div');
-        menu.appendChild(savedStateContainer);
+        playBtns =  menu.getElementsByClassName('play-control');
+        // TODO: Manage errors
+
+        callFunctionOnItems(playBtns,
+            function (btn) {
+                btn.disabled = false;
+                btn.addEventListener('click', play, false);
+            }
+        );
+
+        pauseBtns =  menu.getElementsByClassName('pause-control');
+        callFunctionOnItems(pauseBtns,
+            function (btn) {
+                btn.disabled = true;
+                btn.addEventListener('click', pause, false);
+            }
+        );
+
+        saveBtns =  menu.getElementsByClassName('save-control');
+        callFunctionOnItems(saveBtns,
+            function (btn) {
+                btn.addEventListener('click', saveState, false);
+            }
+        );
+
+        clearBtns =  menu.getElementsByClassName('clear-control');
+        callFunctionOnItems(clearBtns,
+            function (btn) {
+                btn.addEventListener('click', clear, false);
+            }
+        );
+
+        slowFrequencyBtns =  menu.getElementsByClassName('decrease-tempo-control');
+        callFunctionOnItems(slowFrequencyBtns,
+            function (btn) {
+                btn.addEventListener('click', decreaseFrequency, false);
+            }
+        );
+
+        speedFrequencyBtns =  menu.getElementsByClassName('increase-tempo-control');
+        callFunctionOnItems(speedFrequencyBtns,
+            function (btn) {
+                btn.addEventListener('click', increaseFrequency, false);
+            }
+        );
+
+        savedStateContainers  = menu.getElementsByClassName('saved-states-container');
+
+        setTempo(60);
 
         importStateFromCurrentUrlIfNeeded();
     }).call(this);
