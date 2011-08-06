@@ -105,7 +105,6 @@ function Ludesik(renderer, menu){
             play();
         }
 
-        // TODO : launch an event
         var event = document.createEvent("Event");
         event.initEvent("tempoChangeEvent", false, true);
         event.tempo = tempo;

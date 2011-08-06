@@ -22,6 +22,15 @@
         );
 
         ludesik = new Ludesik(/*new SoundPlayer(), */new Renderer(container), menu);
+
+        for (var i = 0; i < frequencyInputs.length; i++) {
+            frequencyInputs[i].addEventListener('change',
+                                                 function (evt){
+                                                     ludesik.setTempo(parseInt(evt.currentTarget.value));
+                                                 },
+                                                 false
+            );
+        }
     }
     
     document.addEventListener('DOMContentLoaded', init, false);
