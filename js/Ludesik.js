@@ -21,6 +21,8 @@ function Ludesik(renderer, menu){
     var clearBtns;
     var savedStateContainers;
 
+    var savedStateCount = 0;
+
     function callFunctionOnItems (items, f) {
         for (var i = 0; i < items.length; i++) {
             f(items[i]);
@@ -143,8 +145,9 @@ function Ludesik(renderer, menu){
     }
 
     function addSavedStateIntoContainer(serializedState) {
-        var savedState =  document.createElement('div');
-        savedState.textContent = 'Test ' + serializedState;
+        var savedState =  document.createElement('li');
+        savedState.textContent = 'State ' + (++savedStateCount);
+        savedState.contentEditable = true;
         savedState.addEventListener('click', function (){loadState(serializedState)}, false);
 
         callFunctionOnItems(savedStateContainers,
@@ -244,7 +247,6 @@ function Ludesik(renderer, menu){
 
         soundPlayer = new SoundPlayer(document.getElementById('audios'), soundsInit);
 
-
         playBtns =  menu.getElementsByClassName('play-control');
         // TODO: Manage errors
 
@@ -291,7 +293,7 @@ function Ludesik(renderer, menu){
             }
         );
 
-        savedStateContainers  = menu.getElementsByClassName('saved-states-container');
+        savedStateContainers  = menu.getElementsByClassName('saved-states');
 
         setTempo(60);
 
