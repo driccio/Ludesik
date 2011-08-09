@@ -32,7 +32,9 @@ function Map() {
      * Method call when on interaction with mobileAgent (click for instance).
      * @param id the mobileAgentId
      */
-	this.onMobileAgentInteraction = function(id){
+	this.onMobileAgentInteraction = function(id){     * onInteraction is called when the user interacts on a {@link mobileAgent}.
+     * The notion of interaction is defined in the {@link Renderer} object. It can be a click, a focus ...
+     *
 		return mobileAgents[id].onInteraction();
 	};
 
@@ -54,8 +56,8 @@ function Map() {
 				var mobileAgentsInSquare = mobileAgentPerSquare[getMobileAgentPerSquareIndex(e.id)];
 				mobileAgentsInSquare.splice(mobileAgentsInSquare.indexOf(e) - 1,1);
 
-				var x = mobileAgentsPositions[e.id].x + (e.direction.deltaX * e.increment);
-				var y = mobileAgentsPositions[e.id].y + (e.direction.deltaY * e.increment);
+				var x = mobileAgentsPositions[e.id].x + (e.direction.deltaX);
+				var y = mobileAgentsPositions[e.id].y + (e.direction.deltaY);
 
                 mobileAgentsPositions[e.id].x = x;
 				mobileAgentsPositions[e.id].y = y;
