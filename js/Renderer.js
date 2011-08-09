@@ -92,10 +92,12 @@ function Renderer(container){
                 }
             }
         }
-        
-        
     }
-
+    
+    /**
+     *
+     * @param state : type {positions: [{id, position, direction}]}
+     */
     this.refresh = function(state){
         state.positions.forEach(
             function (e, i, a) {
@@ -103,6 +105,7 @@ function Renderer(container){
                 var pos = e.position;
 
                 // Play around with 60/61 to get nice rendering depending on browser
+                // Currently works for Firefox 5
                 maElement.style.top = (pos.y*60) + 1 + 'px';
                 maElement.style.left = (pos.x*61) + 1 + 'px';
 
