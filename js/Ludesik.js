@@ -3,7 +3,7 @@
  * MIT Licence
  */
 
-function Ludesik(renderer, menu){
+function Ludesik(renderer, container, menu){
     var map = new Map();
     var counter = 0;
     var soundPlayer;
@@ -139,7 +139,7 @@ function Ludesik(renderer, menu){
 
         var splittedUrl = window.location.href.split('#');
 
-        window.location.href = splittedUrl[0] + '#' + serializedState;
+        window.location.href = splittedUrl[0] + '#s=' + serializedState;
     }
 
     function addSavedStateIntoContainer(serializedState) {
@@ -243,7 +243,7 @@ function Ludesik(renderer, menu){
         */
         });
 
-        soundPlayer = new SoundPlayer(document.getElementById('audios'), soundsInit);
+        soundPlayer = new SoundPlayer(container, soundsInit);
 
         playBtns =  menu.getElementsByClassName('play-control');
         // TODO: Manage errors

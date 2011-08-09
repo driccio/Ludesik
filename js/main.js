@@ -21,7 +21,7 @@
                                   false
         );
 
-        ludesik = new Ludesik(/*new SoundPlayer(), */new Renderer(container), menu);
+        ludesik = new Ludesik(new Renderer(container), container, menu);
 
         for (var i = 0; i < tempoInputs.length; i++) {
             tempoInputs[i].addEventListener('change',
