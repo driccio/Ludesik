@@ -29,21 +29,23 @@ function Map() {
     };
 
     /**
-     * Method call when on interaction with mobileAgent (click for instance).
+     * Method call on interaction with mobileAgent (click for instance).
      * @param id the mobileAgentId
      */
-	this.onMobileAgentInteraction = function(id){     * onInteraction is called when the user interacts on a {@link mobileAgent}.
-     * The notion of interaction is defined in the {@link Renderer} object. It can be a click, a focus ...
-     *
+	this.onMobileAgentInteraction = function(id){
 		return mobileAgents[id].onInteraction();
 	};
 
     /**
      * The nextStep function compute all the new positions of mobileAgents, and detect the collisions with walls and mobileAgents.
+     * @return the new state
      */
 	this.nextStep = function () {
 		var state = new State();
 
+        /**
+         * For each mobile agent the next position is computed and the wall collision are detected.
+         */
         mobileAgents.forEach(
 			function (e, i, a) {
 				var wallsInCollisionWith = [];
@@ -111,6 +113,9 @@ function Map() {
 			}
 		);
 
+        /**
+         * Notify each mobile agent who are in collision with others.
+         */
 		mobileAgentPerSquare.forEach(
 			function (e, i, a) {
 				if (mobileAgentPerSquare[i].length > 1) {
@@ -126,6 +131,10 @@ function Map() {
 			}
 		);
 
+        /**
+         * For each mobile agent, the position and the direction are set in an object pushed in the positions property
+         * of state.
+         */
         mobileAgents.forEach(
 			function (e, i, a) {
                 state.positions.push({id:e.id, position:mobileAgentsPositions[e.id], direction:e.direction});
@@ -135,6 +144,9 @@ function Map() {
 		return state;
 	};
 
+    /**
+     * Get all the current positions of mobile agents.
+     */
     this.getPositions = function() {
         var state = new Object();
 
