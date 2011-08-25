@@ -29,7 +29,7 @@ function Map() {
     };
 
     /**
-     * Method call when on interaction with mobileAgent (click for instance).
+     * Method call on interaction with mobileAgent (click for instance).
      * @param id the mobileAgentId
      */
 	this.onMobileAgentInteraction = function(id){
@@ -38,10 +38,14 @@ function Map() {
 
     /**
      * The nextStep function compute all the new positions of mobileAgents, and detect the collisions with walls and mobileAgents.
+     * @return the new state
      */
 	this.nextStep = function () {
 		var state = new State();
 
+        /**
+         * For each mobile agent the next position is computed and the wall collision are detected.
+         */
         mobileAgents.forEach(
 			function (e, i, a) {
 				var wallsInCollisionWith = [];
@@ -54,8 +58,8 @@ function Map() {
 				var mobileAgentsInSquare = mobileAgentPerSquare[getMobileAgentPerSquareIndex(e.id)];
 				mobileAgentsInSquare.splice(mobileAgentsInSquare.indexOf(e) - 1,1);
 
-				var x = mobileAgentsPositions[e.id].x + (e.direction.deltaX * e.increment);
-				var y = mobileAgentsPositions[e.id].y + (e.direction.deltaY * e.increment);
+				var x = mobileAgentsPositions[e.id].x + (e.direction.deltaX);
+				var y = mobileAgentsPositions[e.id].y + (e.direction.deltaY);
 
                 mobileAgentsPositions[e.id].x = x;
 				mobileAgentsPositions[e.id].y = y;
@@ -109,6 +113,9 @@ function Map() {
 			}
 		);
 
+        /**
+         * Notify each mobile agent who are in collision with others.
+         */
 		mobileAgentPerSquare.forEach(
 			function (e, i, a) {
 				if (mobileAgentPerSquare[i].length > 1) {
@@ -124,6 +131,10 @@ function Map() {
 			}
 		);
 
+        /**
+         * For each mobile agent, the position and the direction are set in an object pushed in the positions property
+         * of state.
+         */
         mobileAgents.forEach(
 			function (e, i, a) {
                 state.positions.push({id:e.id, position:mobileAgentsPositions[e.id], direction:e.direction});
@@ -133,6 +144,9 @@ function Map() {
 		return state;
 	};
 
+    /**
+     * Get all the current positions of mobile agents.
+     */
     this.getPositions = function() {
         var state = {};
 

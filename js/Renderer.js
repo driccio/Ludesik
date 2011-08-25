@@ -63,7 +63,7 @@ function Renderer(container){
 
         // Rendering incompatbilities on FF4, Chrome 12 and Opera 11.50
         // led us to create a compatibility-container to append mobile agents to.
-        container = document.getElementById('compat-container2');
+        //container = document.getElementById('compat-container2');
         container.appendChild(maElement);
 
         mobileAgents[maId] = maElement;
@@ -108,7 +108,6 @@ function Renderer(container){
                 // Currently works for Firefox 5
                 maElement.style.top = (pos.y*60) + 1 + 'px';
                 maElement.style.left = (pos.x*61) + 1 + 'px';
-
                 var direction = e.direction;
                 maElement.className = "mobile-agent";
                 refreshArrow(maElement, direction);

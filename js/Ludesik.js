@@ -3,7 +3,7 @@
  * MIT Licence
  */
 
-function Ludesik(renderer, menu){
+function Ludesik(renderer, container, menu){
     var map = new Map();
     var counter = 0;
     var soundPlayer;
@@ -22,12 +22,24 @@ function Ludesik(renderer, menu){
 
     var savedStateCount = 0;
 
-    function callFunctionOnItems (items, f) {
-        for (var i = 0; i < items.length; i++) {
-            f(items[i]);
-        }
+    /**
+     * forEach is defines here because when you get a collection via getElementByClass, it returns a NodeList
+     * (except Firefox which returns an HtmlCollection. See bug https://bugzilla.mozilla.org/show_bug.cgi?id=14869).
+     * A NodeList is not an array so forEach is not defined in the returned collection.
+     *
+     * @param items the collection of items
+     * @param f the function to call on each items
+     */
+    function forEach (items, f) {
+        // We only reuse the forEach implementation of Array.prototype.
+        Array.prototype.forEach.call(items, f);
     }
 
+    /**
+     *
+     * @param position : type {x, y}
+     * @param direction : type {deltaX, deltaY}
+     */
     function addMobileAgentWithDirection(position, direction) {
         map.addMobileAgent(counter, position, direction);
         renderer.addMobileAgent(counter, position, direction);
@@ -35,16 +47,29 @@ function Ludesik(renderer, menu){
         counter++;
     }
 
+    /**
+     *
+     * @param position : type {x, y}
+     */
     function addMobileAgent(position) {
         var defaultDirection = {deltaX: 1, deltaY: 0};
         addMobileAgentWithDirection(position, defaultDirection);
     }
 
+    /**
+     * onMobileAgentInteraction is called when the user interacts on a {@link mobileAgent}.
+     * The notion of interaction is defined in the {@link Renderer} object. It can be a click, a focus ...
+     *
+     * @param id the id of the mobile agent
+     *
+     * @return object : type {direction: {deltaX, deltaY}}
+     */
     function onMobileAgentInteraction(id) {
         return map.onMobileAgentInteraction(id);
     }
 
     function tick() {
+        // Get the next state.
         var result = map.nextStep();
 
         soundPlayer.playAll(result.wallsInCollision);
@@ -52,16 +77,17 @@ function Ludesik(renderer, menu){
         renderer.refresh(result);
     }
 
+
     function play () {
         isPlaying = true;
 
-        callFunctionOnItems(playBtns,
+        forEach(playBtns,
             function (btn) {
                 btn.disabled = true;
             }
         );
 
-        callFunctionOnItems(pauseBtns,
+        forEach(pauseBtns,
             function (btn) {
                 btn.disabled = false;
             }
@@ -73,13 +99,13 @@ function Ludesik(renderer, menu){
     function pause () {
         isPlaying = false;
 
-        callFunctionOnItems(playBtns,
+        forEach(playBtns,
             function (btn) {
                 btn.disabled = false;
             }
         );
 
-        callFunctionOnItems(pauseBtns,
+        forEach(pauseBtns,
             function (btn) {
                 btn.disabled = true;
             }
@@ -93,7 +119,7 @@ function Ludesik(renderer, menu){
 
         if (tempo <= 0) {
             tempo = 0;
-            callFunctionOnItems(slowTempoBtns,
+            forEach(slowTempoBtns,
                 function (btn) {
                     btn.disabled = true;
                 }
@@ -125,6 +151,11 @@ function Ludesik(renderer, menu){
         renderer.clear();
     }
 
+    /**
+     * Load a given serialized state into the scene and change the current url.
+     *
+     * @param serializedState the serialized state
+     */
     function loadState(serializedState) {
         clear();
 
@@ -139,22 +170,25 @@ function Ludesik(renderer, menu){
 
         var splittedUrl = window.location.href.split('#');
 
-        window.location.href = splittedUrl[0] + '#' + serializedState;
+        window.location.href = splittedUrl[0] + '#s=' + serializedState;
     }
 
-    function addSavedStateIntoContainer(serializedState) {
+    function addSavedStateIntoContainers(serializedState) {
         var savedState =  document.createElement('li');
         savedState.textContent = 'State ' + (++savedStateCount);
         savedState.contentEditable = true;
         savedState.addEventListener('click', function (){loadState(serializedState)}, false);
 
-        callFunctionOnItems(savedStateContainers,
+        forEach(savedStateContainers,
             function (container) {
                 container.appendChild(savedState);
             }
         );
     }
 
+    /**
+     * Save the current state and add it into the savedStateContainers.
+     */
     function saveState() {
         var currentPositions = map.getPositions();
 
@@ -172,9 +206,14 @@ function Ludesik(renderer, menu){
             }
         );
 
-        addSavedStateIntoContainer(serializedState);
+        addSavedStateIntoContainers(serializedState);
     }
 
+    /**
+     * Import a state from a given url.
+     *
+     * @param url the given url.
+     */
     function importState(url) {
         if (!url) {
             // TODO: Set an error message
@@ -195,7 +234,7 @@ function Ludesik(renderer, menu){
             return;
         }
 
-        addSavedStateIntoContainer(splittedSerializedState[1]);
+        addSavedStateIntoContainers(splittedSerializedState[1]);
         loadState(splittedSerializedState[1]);
     }
 
@@ -231,24 +270,14 @@ function Ludesik(renderer, menu){
             else{
                 soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + (8 - wall.index)  + ".ogg";
             }
-            
-            //if()
-            
-            /*if(i){
-                    // not our files. Begging for people to create us awesome tones
-                    soundsInit[id] = "http://dl.dropbox.com/u/20485/otomata/sounds/" + i%9 + ".ogg";
-                
-                
-                }
-        */
         });
 
-        soundPlayer = new SoundPlayer(document.getElementById('audios'), soundsInit);
+        soundPlayer = new SoundPlayer(container, soundsInit);
 
         playBtns =  menu.getElementsByClassName('play-control');
         // TODO: Manage errors
 
-        callFunctionOnItems(playBtns,
+        forEach(playBtns,
             function (btn) {
                 btn.disabled = false;
                 btn.addEventListener('click', play, false);
@@ -256,7 +285,7 @@ function Ludesik(renderer, menu){
         );
 
         pauseBtns =  menu.getElementsByClassName('pause-control');
-        callFunctionOnItems(pauseBtns,
+        forEach(pauseBtns,
             function (btn) {
                 btn.disabled = true;
                 btn.addEventListener('click', pause, false);
@@ -264,28 +293,28 @@ function Ludesik(renderer, menu){
         );
 
         saveBtns =  menu.getElementsByClassName('save-control');
-        callFunctionOnItems(saveBtns,
+        forEach(saveBtns,
             function (btn) {
                 btn.addEventListener('click', saveState, false);
             }
         );
 
         clearBtns =  menu.getElementsByClassName('clear-control');
-        callFunctionOnItems(clearBtns,
+        forEach(clearBtns,
             function (btn) {
                 btn.addEventListener('click', clear, false);
             }
         );
 
         slowTempoBtns =  menu.getElementsByClassName('decrease-tempo-control');
-        callFunctionOnItems(slowTempoBtns,
+        forEach(slowTempoBtns,
             function (btn) {
                 btn.addEventListener('click', decreaseTempo, false);
             }
         );
 
         speedTempoBtns =  menu.getElementsByClassName('increase-tempo-control');
-        callFunctionOnItems(speedTempoBtns,
+        forEach(speedTempoBtns,
             function (btn) {
                 btn.addEventListener('click', increaseTempo, false);
             }

@@ -6,8 +6,10 @@
 function MobileAgent(id, direction) {
     this.id = id
 
+    /**
+     * Direction : type {deltaX, deltaY}
+     */
     this.direction = direction;
-    this.increment = 1;
 
     function computeNextDirection() {
         if ((this.direction.deltaY >= 0 && this.direction.deltaX > 0) ||
@@ -44,6 +46,10 @@ function MobileAgent(id, direction) {
         computeNextDirection.call(this);
     };
 
+    /**
+     *
+     * @return object : type {direction: {deltaX, deltaY}}
+     */
     this.onInteraction = function(){
         computeNextDirection.call(this);
 
