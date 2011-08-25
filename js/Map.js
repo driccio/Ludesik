@@ -148,9 +148,9 @@ function Map() {
      * Get all the current positions of mobile agents.
      */
     this.getPositions = function() {
-        var state = new Object();
+        var state = {};
 
-        state.positions = new Array();
+        state.positions = [];
 
         mobileAgents.forEach(
 			function (e, i, a) {

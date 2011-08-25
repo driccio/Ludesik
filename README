@@ -1,0 +1,23 @@
+Welcome to the Ludesik project!
+
+This project is inspired by the excellent Otomata (http://www.earslap.com/projectslab/otomata).
+
+We, Damien Riccio and David Bruant, have decided to implement some of the ideas in open web
+technologies (HTML, CSS, JavaScript) since the technology allowed us to do it. Also, we had 
+plenty of ideas to improve and needed the code to do so. As it was not available and we had the
+skill to re-do the basics of Otomata, we took some time to redo it.
+After a couple of hours spread across several weeks, a bunch of beers, pizzas, quiches and mojitos
+with home-grown mint we achieved a result with the same basic features than Otomata (less 
+beautiful, we'll admit).
+
+We have been very careful to create something very modular and to allow different implementations
+in order to allow the different things we wanted to do, including:
+- Choosing the behavior when two "mobile agents" collide.
+- Choosing the behavior when a mobile agent collide with a wall.
+- Allowing mobile agents to move with a different rhythm (one square every two times for instance)
+- Allowing mobile agents to move differently (several squares at once, diagonal, etc.)
+- Choosing different sounds and changing them easily
+- etc.
+This should be pretty easy now.
+
+
