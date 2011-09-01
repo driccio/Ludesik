@@ -5,7 +5,11 @@
     position: absolute;
     text-align: center;
     line-height: 100%;
-    border-radius: 5px;
+    border-radius: 33px;
+    -webkit-box-shadow: inset 5px -5px 20px -10px #000000;
+-moz-box-shadow: inset 5px -5px 20px -10px #000000;
+box-shadow: inset 5px -5px 20px -10px #000000; 
+
 }
 
 .right-arrow{
