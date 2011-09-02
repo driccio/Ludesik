@@ -9,15 +9,13 @@ function Renderer(container){
     var document = container.ownerDocument;
     var onSquareInteraction, onMobileAgentInteraction;
     var mobileAgents = [];
+    var colorPalette = ["#FFFF99","#C1272D","#F7931E","#8CC63F","#29ABE2","#662D91","#FF00FF","#0000FF"];
 
     function randomColorString(){
-        var r, g, b;
+       var index = Math.floor(8*Math.random());
+       var color = colorPalette[index];
 
-        r = Math.floor(256*Math.random()).toString(10);
-        g = Math.floor(256*Math.random()).toString(10);
-        b = Math.floor(256*Math.random()).toString(10);
-
-        return ('rgb('+ r +','+ g +','+ b +')');
+        return color;
     }
 
     this.addMobileAgent = function(maId, pos, direction){

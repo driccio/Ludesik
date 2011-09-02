@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="css/ludesik.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-
+    <link href='http://fonts.googleapis.com/css?family=Terminal+Dosis+Light' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Cabin' rel='stylesheet' type='text/css'>
     <script src="js/State.js" type="text/javascript"></script>
     <script src="js/Ludesik.js" type="text/javascript"></script>
     <script src="js/Map.js" type="text/javascript"></script>
@@ -15,26 +16,29 @@
 
     <script src="js/main.js" type="text/javascript"></script>
 
-    <title>LudesiiiiiiiiIIIIIIIIIIIiiiiiiiiiiiiiik</title>
+    <title>Ludesik</title>
 </head>
 <body>
 <div id="compat-container1">
-    <div id="compat-container2">
-        <div class="map-container"></div>
-    </div>
-
+    
     <div id="menu">
+        <div id="logo">Lude<span class="sik">sik</span></div>
         <button class="play-control">Play</button>
         <button class="pause-control" disabled="">Pause</button>
         <button class="save-control">Save</button>
-        <button class="clear-control">Nettoyer</button>
-        <div>
+        <button class="clear-control">Clear</button>
+        <div class="row2">
             <button class="decrease-tempo-control">-</button>
             <input class="tempo-input" type="number">
             <button class="increase-tempo-control">+</button>
         </div>
         <ul class="saved-states"></ul>
     </div>
+    <div id="compat-container2">
+        <div class="map-container"></div>
+    </div>
+
+    
 </div>
 </body>
 </html>
