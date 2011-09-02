@@ -1,16 +1,29 @@
 head, body{
     margin:0;
     padding:0;
+    
 }
 
+#logo{
+    font-family: 'Terminal Dosis Light';
+    font-size:40px;
+    float:left;
+    color: #ffffff;
+}
+.sik{
+    color:#0000ff;
+    
+}
 #compat-container1{
     margin:auto;
-    display:block;
     position:relative;
+    width:600px;
 }
 
 
 #compat-container2{
+    margin-left: auto;
+    margin-right:auto;
     padding: 0;
     border: 0;
     display:inline-block;
@@ -20,8 +33,10 @@ head, body{
 .map-container{
     display: table;
     border-collapse: collapse;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     position: relative;
+    
 }
 
 .map-row{
@@ -32,8 +47,8 @@ head, body{
     display:table-cell;
     width: 60px;
     height: 60px;
-    background-color: #e9e9e8;
-    border: 1px solid #b1b0b0;
+    border: 1px solid darkgoldenrod;
+    
 
 }
 
@@ -42,11 +57,57 @@ head, body{
 }
 
 #menu{
-    background-color: #ffd700;
-    width: 300px;
+   background: #fceabb; /* Old browsers */
+background: -moz-linear-gradient(top, #fceabb 0%, #fccd4d 18%, #f8b500 19%, #fbdf93 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fceabb), color-stop(18%,#fccd4d), color-stop(19%,#f8b500), color-stop(100%,#fbdf93)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #fceabb 0%,#fccd4d 18%,#f8b500 19%,#fbdf93 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #fceabb 0%,#fccd4d 18%,#f8b500 19%,#fbdf93 100%); /* Opera11.10+ */
+background: -ms-linear-gradient(top, #fceabb 0%,#fccd4d 18%,#f8b500 19%,#fbdf93 100%); /* IE10+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#fbdf93',GradientType=0 ); /* IE6-9 */
+background: linear-gradient(top, #fceabb 0%,#fccd4d 18%,#f8b500 19%,#fbdf93 100%); /* W3C */
+    border:1px solid darkgoldenrod;
+    width: 520px;
     height: 100%;
     display: inline-block;
     vertical-align: top;
+    padding:15px;
+    -moz-border-radius-topleft: 12px;
+    -moz-border-radius-topright: 12px;
+    -moz-border-radius-bottomright: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-radius: 8px 8px 0px 0px;
+    border-radius: 8px 8px 0px 0px;  
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+
+#menu button, #menu input{
+    font-family: "Cabin";
+    font-size: 11px;
+    left: 212px;
+    letter-spacing: 0.055em;
+    position: relative;
+    
+}
+
+#menu button{
+    height:25px;
+
+}
+
+#menu input{
+     -moz-border-radius:5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;  
+     height: 18px;
+    position: relative;
+    top: -1px;
+    width:131px;
+}
+
+.row2{
+    margin-top:5px;
 }
 
 .saved-states{
