@@ -113,6 +113,22 @@ background: linear-gradient(top, #fceabb 0%,#fccd4d 18%,#f8b500 19%,#fbdf93 100%
 .saved-states{
     margin: 0;
     padding: 0;
+    display:block;
+     -moz-border-radius-topleft: 12px;
+    -moz-border-radius-topright: 0px;
+    -moz-border-radius-bottomright: 0px;
+    -moz-border-radius-bottomleft: 12px;
+    -webkit-border-radius: 8px 0px 0px 8px;
+    border-radius: 8px 0px 0px 8px;  
+     background: #fbdf93; /* Old browsers */
+     width:68px;
+    border:1px solid darkgoldenrod;
+    position:absolute;
+    left:-79px;
+    top:107px;
+     font-family: "Cabin";
+    font-size: 13px;
+    letter-spacing: 0.055em;
 }
 
     ul.saved-states li{
@@ -124,6 +140,8 @@ background: linear-gradient(top, #fceabb 0%,#fccd4d 18%,#f8b500 19%,#fbdf93 100%
 
     ul.saved-states li:hover{
         background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
+        border-radius: 7px;
+        -moz-border-radius:7px;
+        -webkit-border-radius:7px;
     }
 
